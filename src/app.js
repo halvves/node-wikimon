@@ -68,7 +68,7 @@ mon.addListener('message', (from, to, text, message) => {
   }
 });
 
-app.get('/sse', (req, res) => {
+app.get('/', (req, res) => {
   sse.addClient(req, res);
   sse.send('Successfully connected to the Wikipedia events stream.');
 });
