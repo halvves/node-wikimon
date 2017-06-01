@@ -23,9 +23,18 @@ const sse = new SSEChannel({
   cors: {origins: ['*']},
 });
 
+const wikiParse = new RegExp([
+  /(?:\[\[(.*?)\]\])/, // page_title
+  /\s+(?:([A-Z\!]+)\s)?/, // flags
+  /(?:(\S*))/, // url
+  /\s+\*\s(?:(.*))?/, // user
+  /\s\*\s(?:\(([\+\-][0-9]+)\))?/, // change_size
+  /\s?(?:(.+))?/, // summary
+].map((r) => r.source).join(''));
+
 mon.addListener('message', (from, to, text, message) => {
   const unformat = ircColors.stripColorsAndStyle(text);
-  const parsed = unformat.match(/(?:\[\[(.*?)\]\])\s+(?:([A-Z\!]+)\s)?(?:(\S*))\s+\*\s(?:(.*))?\s\*\s(?:\(([\+\-][0-9]+)\))?\s?(?:(.+))?/);
+  const parsed = unformat.match(wikiParse);
   if (parsed) {
     const flags = parsed[2] ? parsed[2] : '';
     const query = queryString.parse(URL.parse(parsed[3]).query);
