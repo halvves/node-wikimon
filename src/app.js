@@ -25,26 +25,38 @@ const sse = new SSEChannel({
 
 mon.addListener('message', (from, to, text, message) => {
   const unformat = ircColors.stripColorsAndStyle(text);
-  const parsed = unformat.match(/\[\[(.*?)\]\]\s?([A-Z\!]+)?\s?(\S*)\s\*\s(.*?)\s\*\s\(?([\+\-][0-9]+)?\)\s?(.+)?/);
-  const flags = parsed && parsed[2] ? parsed[2] : '';
-  const query = parsed && queryString.parse(URL.parse(parsed[3]).query);
-  parsed && sse.send({
-    data: {
-      page_title: parsed[1],
-      flags: flags,
-      url: parsed[3],
-      user: parsed[4],
-      change_size: +parsed[5],
-      summary: parsed[6],
-      is_anon: isIp(parsed[4]),
-      is_new: flags.includes('N'),
-      is_bot: flags.includes('B'),
-      is_minor: flags.includes('M'),
-      is_unpatrolled: flags.includes('!'),
-      parent_rev_id: query.diff,
-      rev_id: query.oldid,
-    },
-  });
+  const parsed = unformat.match(/(?:\[\[(.*?)\]\])\s+(?:([A-Z\!]+)\s)?(?:(\S*))\s+\*\s(?:(.*))?\s\*\s(?:\(([\+\-][0-9]+)\))?\s?(?:(.+))?/);
+  if (parsed) {
+    const flags = parsed[2] ? parsed[2] : '';
+    const query = queryString.parse(URL.parse(parsed[3]).query);
+    let action = 'edit';
+    let url = parsed[3];
+    if (!query.diff && !query.oldid) {
+      action = url;
+      url = null;
+    }
+    sse.send({
+      data: {
+        action: action,
+        change_size: +parsed[5],
+        flags: flags ? flags : null,
+        hashtags: [], // TODO
+        is_anon: isIp(parsed[4]),
+        is_bot: flags.includes('B'),
+        is_minor: flags.includes('M'),
+        is_new: flags.includes('N'),
+        is_unpatrolled: flags.includes('!'),
+        mentions: [], // TODO
+        ns: '', // TODO
+        page_title: parsed[1],
+        parent_rev_id: query.diff,
+        rev_id: query.oldid,
+        summary: parsed[6],
+        url: url,
+        user: parsed[4],
+      },
+    });
+  }
 });
 
 app.get('/sse', (req, res) => {
