@@ -1,0 +1,13 @@
+<html>
+  <head>
+    <title>Wikipedia Event Stream</title>
+  </head>
+  <body>
+  <script>
+    var es = new EventSource("http://localhost:3030/sse");
+    es.onmessage = function(e) {
+      console.log(e.data);
+    };
+  </script>
+  </body>
+</html>

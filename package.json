@@ -1,0 +1,48 @@
+{
+  "name": "node-wikimon",
+  "version": "0.0.0",
+  "description": "the hatnote/wikimon WebSocket re-created as SSE in node",
+  "scripts": {
+    "start": "node ./dist/app.js",
+    "build": "babel ./src -d ./dist",
+    "client": "babel-node ./tools/dev-server.js",
+    "dev": "run-p client server",
+    "lint": "eslint ./src",
+    "server": "babel-node ./src/app.js"
+  },
+  "author": "halvves <hi@halvves.com> (https://halvves.com/)",
+  "license": "MIT",
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-2"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "google",
+    "rules": {
+      "require-jsdoc": 1,
+      "max-len": 1
+    }
+  },
+  "dependencies": {
+    "cors": "^2.8.3",
+    "express": "^4.15.3",
+    "irc": "^0.5.2",
+    "irc-colors": "^1.3.3",
+    "is-ip": "^2.0.0",
+    "sse-channel": "^2.0.6"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "browser-sync": "^2.18.12",
+    "eslint": "^3.19.0",
+    "eslint-config-google": "^0.7.1",
+    "npm-run-all": "^4.0.2"
+  }
+}
