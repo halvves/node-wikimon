@@ -18,5 +18,13 @@
   },
   "devDependencies": {
     "micro-dev": "^3.0.0"
+  },
+  "now": {
+    "public": true,
+    "type": "docker",
+    "alias": "wikimon",
+    "features": {
+      "cloud": "v2"
+    }
   }
 }
