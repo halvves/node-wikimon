@@ -1,16 +1,13 @@
-import cors from 'cors';
-import express from 'express';
-import irc from 'irc';
-import ircColors from 'irc-colors';
-import isIp from 'is-ip';
-import queryString from 'querystring';
-import SSEChannel from 'sse-channel';
-import URL from 'url';
+const irc = require('irc');
+const ircColors = require('irc-colors');
+const isIp = require('is-ip');
+const queryString = require('querystring');
+const SSEChannel = require('sse-channel');
+const URL = require('url');
 
-import ircConfig from './irc-config';
+const ircConfig = require('./irc-config');
 
-const app = express();
-app.use(cors());
+const testPage = require("fs").readFileSync(__dirname + "/test.html", "utf8");
 
 const mon = new irc.Client(
   ircConfig.server,
@@ -68,9 +65,18 @@ mon.addListener('message', (from, to, text, message) => {
   }
 });
 
-app.get('/', (req, res) => {
-  sse.addClient(req, res);
-  sse.send('Successfully connected to the Wikipedia events stream.');
-});
-
-app.listen(3030);
+module.exports = (req, res) => {
+  if (req.url === '/') {
+    sse.addClient(req, res);
+    sse.send('Successfully connected to the Wikipedia events stream.');
+  } else if (req.url === '/test') {
+    res.writeHead(200, {
+      "Content-Type": "text/html; charset=utf-8",
+      "Content-Length": Buffer.byteLength(testPage)
+    });
+    res.end(testPage);
+  } else {
+    res.writeHead(404);
+    res.end('Not found');
+  }
+};

@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Wikipedia Event Stream - Client Test</title>
+  </head>
+  <body>
+    <h1>Wikipedia Event Stream - Client Test</h1>
+    <pre>Connecting…</pre>
+    <script>
+      var ev = new EventSource('/');
+      var pre = document.querySelector('pre');
+      ev.onmessage = function(e) {
+        pre.innerHTML = pre.innerHTML += "\n" + e.data;
+        if (pre.innerHTML.length > 10000) {
+          pre.innerHTML = "[trimmed]\n";
+        }
+      }
+    </script>
+  </body>
+</html>
