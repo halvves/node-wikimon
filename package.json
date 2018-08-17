@@ -22,7 +22,7 @@
   "now": {
     "public": true,
     "type": "docker",
-    "alias": "wikimon",
+    "alias": "wikimon.halvves.com",
     "features": {
       "cloud": "v2"
     }
