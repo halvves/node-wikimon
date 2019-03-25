@@ -1,12 +1,14 @@
-# Node Wikimon
+# Wikimon
 
-Live event stream of wikipedia updates (a spinoff of [hatnote/wikimon](https://github.com/hatnote/wikimon)).
+Live event stream of wikipedia updates (a spinoff of [hatnote/wikimon](https://github.com/hatnote/wikimon)) deployed to glitch.
 
-Example usage: http://halvves.com/wikipedia-audiovisuals/
+Github: [halvves/node-wikimon](https://github.com/hatnote/wikimon)
+
+Test page: [https://wikimon.glitch.me/test](https://wikimon.glitch.me/test)
 
 Subscribe to a public version of the stream:
 ```javascript
-const es = new EventSource("https://wikimon.halvves.com");
+const es = new EventSource("https://wikimon.glitch.me");
 es.onmessage = function(e) {
   const dat = JSON.parse(e.data);
   processData(dat);

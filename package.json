@@ -1,7 +1,7 @@
 {
-  "name": "node-wikimon",
+  "name": "wikimon",
   "version": "1.0.0",
-  "description": "the hatnote/wikimon WebSocket re-created as SSE in node",
+  "description": "A Wikipedia Event Stream",
   "main": "./src/index.js",
   "scripts": {
     "start": "micro",
@@ -18,13 +18,5 @@
   },
   "devDependencies": {
     "micro-dev": "^3.0.0"
-  },
-  "now": {
-    "public": true,
-    "type": "docker",
-    "alias": "wikimon.halvves.com",
-    "features": {
-      "cloud": "v2"
-    }
   }
 }
